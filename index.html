@@ -1946,6 +1946,7 @@ table.ox-mx2{width:100%;border-collapse:collapse;font-size:13.5px;}
 .sd-who-h .icon{width:14px;height:14px;color:var(--wc);}
 .sd-who-c.them .sd-who-h .icon{color:var(--text-3);}
 .sd-who .ox-bt{margin:0;}
+.sd-rw-ft{grid-template-columns:minmax(0,1fr) !important;}
 @media (max-width:700px){.sd-who-g{grid-template-columns:1fr;}.sd-who-c+.sd-who-c{border-left:0;border-top:1px solid var(--border);}}
 </style>
 <svg style="display:none" aria-hidden="true"><defs>
@@ -2166,7 +2167,7 @@ function whoHtml(c){ var w = c.who; if (!w) return '';
   var M = {dev:['개발 필요','Dev work needed'], setup:['신청과 설정 위주','Mostly apply and set up'], partner:['파트너가 대부분 처리','Partner does most of it']};
   var m = M[w.mode] || M.dev;
   return '<div class="sd-who m-' + w.mode + '"><div class="sd-who-top"><span class="sd-who-mode">' + tx(m[0], m[1]) + '</span><span class="sd-who-ct"><b>' + tx('연락과 신청', 'Contact') + '</b>' + esc(t(w.contact)) + '</span></div>' +
-    '<div class="sd-who-g"><div class="sd-who-c"><div class="sd-who-h">' + ic('i-users') + tx('우리 개발팀이 할 일', 'What our team builds') + '</div>' + bt(w.us) + '</div>' +
+    '<div class="sd-who-g"><div class="sd-who-c"><div class="sd-who-h">' + ic('i-users') + tx('게임사측 개발 필요', 'Studio-side work') + '</div>' + bt(w.us) + '</div>' +
     '<div class="sd-who-c them"><div class="sd-who-h">' + ic('i-link') + esc(t(w.partner)) + tx(' 측 담당', ' handles') + '</div>' + bt(w.them) + '</div></div></div>'; }
 function insightHtml(c){
   return '<div class="ox-ins">' + bt([{t: {ko: '효과 요인', en: 'Why it works'}, d: c.why}, {t: {ko: 'Project S 적용', en: 'For Project S'}, d: c.take}, {t: {ko: '주의', en: 'Watch out'}, d: c.caveat}]) + '</div>'; }
@@ -2242,8 +2243,7 @@ function row(c){
     '<div class="ox-lbl">' + tx('주요 기능', 'What it does') + '</div>' + bt(c.fn, 'sd-fn') + '</div>' +
     '<div class="ox-rw-x sd-flow"><div class="ox-lbl">' + tx('플레이어 이용 흐름', 'What the player sees') + '</div>' + bt(c.steps, 'num') +
     '<div class="ox-lbl">' + tx('우수 사례', 'Who does it well') + '</div>' + exHtml(c, true) + '</div>' +
-    '<div class="sd-rw-ft"><div class="ox-rcp fb-' + c.fb.v + '"><div class="ox-rcp-h"><div class="ox-rcp-v">' + fbChip(c) + infoI(verdictInfo(c)) + '</div><span>' + esc(t(c.fb.line)) + '</span></div></div>' +
-    '<div class="ox-rw-ps" style="--lc:' + PRI[c.pri][2] + '"><b>' + ic('i-target') + 'PROJECT S<em>' + pk(PRI[c.pri]) + '</em></b><span>' + esc(t(c.take)) + '</span></div></div>' + subsHtml(c) + '</article>';
+    '<div class="sd-rw-ft"><div class="ox-rw-ps" style="--lc:' + PRI[c.pri][2] + '"><b>' + ic('i-target') + 'PROJECT S<em>' + pk(PRI[c.pri]) + '</em></b><span>' + esc(t(c.take)) + '</span></div></div>' + subsHtml(c) + '</article>';
 }
 function renderGrid(){
   var list = sorted(CASES.filter(function(c){ return F.pri === 'all' || c.pri === F.pri; }));
@@ -2272,7 +2272,7 @@ function subCard(s){
   return '<div class="sd-sub" data-case="' + s.id + '" style="--cc:' + cc(s) + '">' + (sh ? shotDiv(sh, 'sd-sub-shot', s.id) : '') +
     '<div class="sd-sub-c"><div class="sd-sub-t"><b>' + esc(t(s.name)) + '</b>' + priTag(s) + effTag(s) + (s.new ? '<span class="ox-flag new">' + tx('최신', 'NEW') + ' ' + esc(s.year) + '</span>' : '') + '</div>' +
     ctxHtml(s) + bt(s.fn, 'sd-fn sd-sub-fn') +
-    '<div class="sd-sub-ft">' + fbChip(s) + '<span class="sd-sub-ps" style="--lc:' + PRI[s.pri][2] + '"><b>PROJECT S</b>' + esc(t(s.take)) + '</span></div></div></div>';
+    '<div class="sd-sub-ft">' + '<span class="sd-sub-ps" style="--lc:' + PRI[s.pri][2] + '"><b>PROJECT S</b>' + esc(t(s.take)) + '</span></div></div></div>';
 }
 function subsHtml(c){ if (!c.subs || !c.subs.length) return '';
   return '<div class="sd-subs"><div class="sd-subs-h">' + ic('i-layers') + tx('하위 항목', 'Sub-items') + ' <em>' + c.subs.length + '</em><span>' + tx('카드 선택 시 상세 표시', 'Click a card for details') + '</span></div><div class="sd-subs-g">' + c.subs.map(subCard).join('') + '</div></div>'; }
@@ -2303,7 +2303,6 @@ function openCase(id){
     '<div class="ox-sec"><div class="v3-h">' + ic('i-box') + tx('구현에 필요한 것', 'What it takes to build') + '</div>' + bt(c.impl, 'sd-impl') + '</div>' +
     '<div class="ox-sec"><div class="v3-h">' + ic('i-users') + tx('누가 무엇을 하나', 'Who does what') + '</div>' + whoHtml(c) + '</div>' +
     '<div class="ox-sec"><div class="v3-h">' + ic('i-target') + tx('핵심 인사이트', 'Key insight') + '</div>' + insightHtml(c) + '</div>' +
-    '<div class="ox-sec"><div class="v3-h">' + ic('i-message') + tx('반응', 'Reception') + '</div><div class="ox-rcp fb-' + c.fb.v + '"><div class="ox-rcp-h"><div class="ox-rcp-v">' + fbChip(c) + '</div><span>' + esc(t(c.fb.line)) + '</span></div></div></div>' +
     '<details class="ox-sec ox-srcs"><summary>' + ic('i-link') + tx('근거와 출처', 'Evidence and sources') + ' <em>' + c.rec.length + '</em></summary><ul class="ox-bt src">' + rec + '</ul></details>';
   applyTips(d);
   d.hidden = false; document.getElementById('dim').hidden = false; document.body.style.overflow = 'hidden'; d.scrollTop = 0;
@@ -2317,13 +2316,12 @@ function closeCase(){
 
 /* ---- page 5 matrix ---- */
 function renderMatrix(){
-  var head = '<thead><tr><th class="c0">' + tx('기능', 'Feature') + '</th><th>' + tx('티어, 분야', 'Tier, area') + '</th><th>' + tx('공수', 'Effort') + infoI(tx('점 1개 낮음(1~2주 수준), 2개 중간, 3개 높음. 주 수는 추정치.', 'One dot low (about 1-2 weeks), two medium, three high. Weeks are estimates.')) + '</th><th>' + tx('비용', 'Cost') + '</th><th>' + tx('반응', 'Reception') + infoI(tx('해당 기능에 대한 플레이어, 업계 반응 판정. 점은 근거 강도.', 'Verdict on player or industry reaction. Dots show evidence strength.')) + '</th></tr></thead>';
+  var head = '<thead><tr><th class="c0">' + tx('기능', 'Feature') + '</th><th>' + tx('티어, 분야', 'Tier, area') + '</th><th>' + tx('공수', 'Effort') + infoI(tx('점 1개 낮음(1~2주 수준), 2개 중간, 3개 높음. 주 수는 추정치.', 'One dot low (about 1-2 weeks), two medium, three high. Weeks are estimates.')) + '</th><th>' + tx('비용', 'Cost') + '</th></tr></thead>';
   var body = TIERS.map(function(gr, gi){
     var items = sorted(CASES.filter(function(c){ return c.pri === gr.k; })).reduce(function(a, c){ return a.concat([c], c.subs || []); }, []);
     return '<tr class="ox-mx2-g' + (gr.k === 'b' ? ' warn' : '') + '"><td colspan="5">' + ic(gr.i) + '<b>' + pk(gr.t) + '</b><span>' + pk(gr.l) + '</span></td></tr>' + items.map(function(c){
       return '<tr data-case="' + c.id + '" tabindex="0"' + (c.parent ? ' class="sub"' : '') + ' style="--cc:' + cc(c) + '"><td class="c0"><span class="ox-mx-n">' + (c.parent ? '<span class="sd-subi">└</span>' : '') + '<span class="sd-pvs">' + provHtml(c) + '</span><b>' + esc(t(c.name)) + '</b></span></td>' +
-        '<td><span class="sd-tc">' + priTag(c) + grpTag(c) + '</span></td><td class="y">' + effTag(c) + '</td><td class="h">' + esc(t(c.cost)) + '</td>' +
-        '<td><div class="rc">' + fbChip(c) + '</div></td></tr>'; }).join('');
+        '<td><span class="sd-tc">' + priTag(c) + grpTag(c) + '</span></td><td class="y">' + effTag(c) + '</td><td class="h">' + esc(t(c.cost)) + '</td>' + '</tr>'; }).join('');
   }).join('');
   var el = document.getElementById('matrix'); el.className = 'ox-mx2'; el.innerHTML = head + '<tbody>' + body + '</tbody>';
 }
